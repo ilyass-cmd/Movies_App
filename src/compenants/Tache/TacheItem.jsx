@@ -6,7 +6,7 @@ function TacheItem({ tache, onBasculer, onSupprimer }) {
         checked={tache.faite}
         onChange={() => onBasculer(tache.id)}
       />
-      <span>{tache.texte} test</span>
+      <span>{tache.texte} </span>
       <button onClick={() => onSupprimer(tache.id)}>🗑</button>
     </li>
   );
