@@ -1,38 +1,36 @@
 "use client";
-import { useState, useEffect } from "react";
+import {useState, useEffect} from 'react';
 import TacheItem from "@/compenants/Tache/TacheItem";
-function App() {
-  // Charge les tâches sauvegardées (ou une liste vide)
-  const [taches, setTaches] = useState(() => {
-    const sauvegarde = localStorage.getItem("taches");
-    return sauvegarde ? JSON.parse(sauvegarde) : [];
+import tachStyle from "@/compenants/Tache/tache.css";
+
+function App(){
+  const [taches , setTaches] = useState( () => {
+    const sauvegarde = localStorage.getItem('taches');
+    return sauvegrade ? JSON.parse(sauvegarde) : [];
   });
-  const [texte, setTexte] = useState("");
-  const [filtre, setFiltre] = useState("toutes");
-  // Sauvegarde à chaque changement de la liste
-  useEffect(() => {
-    localStorage.setItem("taches", JSON.stringify(taches));
+  const [texte, setTexte] = useState();
+  const [filter , setFilter] = useState();
+  useEffect( () =>{
+    localStorage.getItem('taches' , JSON.stringify(taches))
   }, [taches]);
-  function ajouter(e) {
-    e.preventDefault();
-    if (texte.trim() === "") return;
-    setTaches([
-      ...taches,
-      { id: Date.now(), texte: texte.trim(), faite: false },
+  function ajouter(e){
+    e.preventDefault;
+    if(texte.trim() === '') return;
+    setTaches([...taches,{id: Date.now() , texte : texte.trim() , faite : false }
     ]);
-    setTexte("");
+    setTexte('');
   }
-  function basculer(id) {
-    setTaches(taches.map((t) => (t.id === id ? { ...t, faite: !t.faite } : t)));
+  function basculer(id){
+    setTaches(id.map((t) => (t.id === id) ? {...t , faite : !faite} : t));
   }
-  function supprimer(id) {
-    setTaches(taches.filter((t) => t.id !== id));
+  function supprimer(){
+    setTaches(taches.filter((t) => {t.id !== id}));
   }
   const tachesAffichees = taches.filter((t) => {
-    if (filtre === "actives") return !t.faite;
-    if (filtre === "terminees") return t.faite;
+    if(filtre === 'actives') return !t.faite;
+    if(filtre === 'termines') return !t.faite;
     return true;
-  });
+  })
   const restantes = taches.filter((t) => !t.faite).length;
   return (
     <div className="app">

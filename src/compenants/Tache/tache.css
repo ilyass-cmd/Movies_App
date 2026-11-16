@@ -1,0 +1,189 @@
+/* ---------- Variables ---------- */
+:root {
+  --fond: #eef2f5;
+  --carte: #ffffff;
+  --encre: #1c2733;
+  --encre-douce: #66778a;
+  --trait: #d5dde5;
+  --accent: #1b6e8f;
+  --accent-fonce: #145670;
+  --danger: #c0392b;
+  --rayon: 10px;
+}
+
+/* ---------- Base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 2rem 1rem;
+  background: var(--fond);
+  color: var(--encre);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+/* ---------- Conteneur principal ---------- */
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1.75rem;
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+}
+
+.app h1 {
+  margin: 0 0 1.25rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Formulaire d'ajout ---------- */
+form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.65rem 0.85rem;
+  font: inherit;
+  color: inherit;
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: 8px;
+}
+
+input::placeholder {
+  color: var(--encre-douce);
+}
+
+/* ---------- Boutons ---------- */
+button {
+  padding: 0.65rem 1rem;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+button:hover {
+  background: var(--accent-fonce);
+}
+
+/* ---------- Focus visible (clavier) ---------- */
+input:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(27, 110, 143, 0.35);
+  outline-offset: 2px;
+}
+
+input:focus-visible {
+  border-color: var(--accent);
+}
+
+/* ---------- Filtres ---------- */
+.filtres {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filtres button {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--encre-douce);
+  background: transparent;
+  border: 1px solid var(--trait);
+}
+
+.filtres button:hover {
+  color: var(--encre);
+  background: var(--fond);
+}
+
+/* Bouton actif : ajoute className="actif" dans le JSX */
+.filtres button.actif {
+  color: #fff;
+  background: var(--encre);
+  border-color: var(--encre);
+}
+
+/* ---------- Liste des tâches ---------- */
+ul {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--trait);
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+li input[type="checkbox"] {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* Tâche terminée : ajoute className="faite" sur le texte dans TacheItem */
+li .faite,
+li.faite {
+  color: var(--encre-douce);
+  text-decoration: line-through;
+}
+
+/* Bouton de suppression (dernier bouton de la ligne) */
+li button {
+  margin-left: auto;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--danger);
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+li button:hover {
+  background: #fbeceb;
+  border-color: #f0c6c2;
+}
+
+/* ---------- Messages et compteur ---------- */
+.app > p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--encre-douce);
+}
+
+/* ---------- Petits écrans ---------- */
+@media (max-width: 480px) {
+  .app {
+    padding: 1.25rem;
+  }
+
+  form {
+    flex-direction: column;
+  }
+}
