@@ -1,6 +1,8 @@
+"use client";
+
 import { useMemo, useState } from "react";
-import MovieCard from "../MovieCard/MovieCard";
-import { movies } from "../data/movies";
+import MovieCard from "../cardes/MovieCard";
+import { movies } from "./Movie";
 import "./Home.css";
 
 function Home() {
@@ -11,11 +13,17 @@ function Home() {
     return movies.filter((movie) => movie.title.toLowerCase().includes(query));
   }, [search]);
 
+  const count = filteredMovies.length;
+
   return (
     <main className="Home">
       <h1>Films</h1>
 
-      <form onSubmit={(e) => e.preventDefault()} className="search-form" role="search">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="search-form"
+        role="search"
+      >
         <input
           type="search"
           placeholder="Rechercher un film..."
@@ -24,20 +32,24 @@ function Home() {
           onChange={(e) => setSearch(e.target.value)}
         />
         {search && (
-          <button type="button" className="search-btn secondary" onClick={() => setSearch("")}>
+          <button
+            type="button"
+            className="search-btn secondary"
+            onClick={() => setSearch("")}
+          >
             Effacer
           </button>
         )}
       </form>
 
       <p className="results-count" aria-live="polite">
-        {filteredMovies.length} film{filteredMovies.length > 1 ? "s" : ""}
+        {count} film{count > 1 ? "s" : ""}
       </p>
 
-      {filteredMovies.length > 0 ? (
+      {count > 0 ? (
         <div className="movies-grid">
-          {filteredMovies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+          {filteredMovies.map((movie, index) => (
+            <MovieCard key={movie.id} movie={movie} priority={index === 0} />
           ))}
         </div>
       ) : (
