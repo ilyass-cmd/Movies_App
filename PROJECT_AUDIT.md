@@ -4,7 +4,8 @@
 - **Audited commit:** `38dc23b` ("Project Movies") on `main`
 - **Audit date:** 2026-11-16
 - **Environment:** Windows 11, Node.js 24.17.0, npm 11.13.0, Next.js 16.4.3
-- **Scope:** clone, inspection, build/lint/runtime audit, fixes, verification. No commits, no push, no remote changes.
+- **Scope:** clone, inspection, build/lint/runtime audit, fixes, verification. The audit itself made no remote changes.
+- **Current state (17 November 2026):** the audit fixes, the Next.js 16.4.6 upgrade and the CI workflow are committed on branch `chore/next-16.4.6-ci` (`080586f`, `e50996e`) and pushed to `origin`. `main` is still `38dc23b`; no pull request has been opened or merged.
 
 ---
 
@@ -288,7 +289,7 @@ After the fixes in this audit:
 | `src/compenants/Users/User.jsx` | edited (lint only) |
 | `README.md` | rewritten |
 
-No files were deleted, no commit was created, no branch or remote setting was changed. `package.json`, `package-lock.json`, `next.config.mjs`, `eslint.config.mjs` and `AGENTS.md` are untouched.
+No files were deleted and no branch or remote setting was changed during the audit. These fixes were later committed as `080586f` on `chore/next-16.4.6-ci`. `package.json`, `package-lock.json`, `next.config.mjs`, `eslint.config.mjs` and `AGENTS.md` were not touched by the Phase-1 fixes.
 
 ---
 
@@ -607,20 +608,22 @@ Not run: `npm test` (no test script exists), Lighthouse performance benchmark (u
 4. **Consolidate the component tree** (`compenants`/`cardes`/duplicate `MovieCard`).
 5. **Add tests for favourites + search**, then responsive verification at mobile widths.
 
-> **Security upgrade note:** your cloned Next.js version (16.4.3) is affected by a known vulnerability, and npm reports a patched release (16.4.6). Upgrading was intentionally left out of this audit because dependency changes were outside the approved scope — it was later applied in a separate worktree after approval (see the Addendum below).
+> **Security upgrade note:** your cloned Next.js version (16.4.3) is affected by a known vulnerability, and npm reports a patched release (16.4.6). Upgrading was intentionally left out of this audit because dependency changes were outside the approved scope. It was approved afterwards and is now committed as `e50996e` on `chore/next-16.4.6-ci` (see the Addendum below).
 
 ---
 
 ## Addendum — Security upgrade (approved after the audit)
 
-After the audit was delivered, the maintainer approved the security upgrade in an
-isolated Git worktree, so the main working tree above is unchanged.
+After the audit was delivered, the maintainer approved the security upgrade. It
+was first prepared and verified in a sibling Git worktree, then committed on
+branch `chore/next-16.4.6-ci` and pushed to `origin`. It is not yet merged into
+`main`.
 
-- **Worktree:** `C:\Users\DELL\Movies_App-security-upgrade` (detached HEAD at `38dc23b`, containing the audit fixes copied in for verification).
+- **Worktree used for preparation:** `../Movies_App-security-upgrade` (detached HEAD at `38dc23b`, containing the audit fixes copied in for verification). It is still present and can be removed once the branch is merged.
 - **Upgrade:** `next` **16.4.3 → 16.4.6** and `eslint-config-next` **16.4.3 → 16.4.6** (exact versions).
 - **Config:** added `experimental.agentUpgrade: "security"` to `next.config.mjs`; unrelated options preserved.
 - **Duplicate checks:** no `next-upgrade:` markers, branches, or commits with equivalent work. `gh` is not installed, so open pull requests could not be checked.
-- **Compliance:** no commit, no push, no PR, no remote changes were made, per the maintainer's instructions.
+- **Execution:** committed as `e50996e` ("chore: upgrade Next.js to 16.4.6 and add CI") and pushed to `origin/chore/next-16.4.6-ci`. No pull request, merge or force push has been performed.
 
 Verification in the upgraded worktree:
 
@@ -634,37 +637,42 @@ Verification in the upgraded worktree:
 | Browser | No console errors; favourite toggles, persists across reload, single `#contenu` |
 | Lighthouse | `/`: accessibility 1.00, best-practices 1.00, SEO 1.00, no failures |
 
-The upgrade remains isolated in that worktree; it is not merged into the main
-checkout and contains no commits. The dev-only advisories can be addressed later
-by upgrading the ESLint toolchain (see Priority 1/2).
+The upgrade is now committed on `chore/next-16.4.6-ci` (`e50996e`) and pushed;
+`main` is still at `38dc23b`, so nothing is merged. The dev-only advisories can
+be addressed later by upgrading the ESLint toolchain (see Priority 1/2).
 
 ---
 
 ## Phase 2 — Contribution plan (reviewed 16 November 2026)
 
 > **Execution update (17 November 2026):** this plan has been applied on branch
-> `chore/next-16.4.6-ci`. The Phase-1 fixes are the first commit on that branch;
-> the Next.js 16.4.6 upgrade and `.github/workflows/ci.yml` are the follow-up
-> commit. Cleanup (2.3), tests (2.5) and responsive verification (2.6) remain
-> future contributions.
+> `chore/next-16.4.6-ci`. The Phase-1 fixes are the first commit on that branch
+> (`080586f`); the Next.js 16.4.6 upgrade and `.github/workflows/ci.yml` are the
+> follow-up commit (`e50996e`). The branch is pushed and awaiting review. Cleanup
+> (2.3), tests (2.5) and responsive verification (2.6) remain future
+> contributions.
 >
-> **Review-time status:** planning only. No application feature or component
-> behaviour was changed by the plan itself.
+> **Review-time status:** when this section was written the plan had not been
+> executed. No application feature or component behaviour was changed by the
+> plan itself.
 
 ### 2.1 Repository state inspected
 
+The planning pass observed `main` at `38dc23b` with the Phase-1 fixes uncommitted.
+The table records the state after execution.
+
 | Item | Observed |
 | --- | --- |
-| Main checkout | `C:\Users\DELL\Movies_App` |
-| Branch / HEAD | `main` at `38dc23b` (`Project Movies`) |
-| Working tree | Phase-1 audit fixes still uncommitted (10 modified files, 7 new paths) |
-| Upgrade worktree | `C:\Users\DELL\Movies_App-security-upgrade`, detached HEAD `38dc23b` |
+| Main checkout | repository root `.` |
+| Branch / HEAD | `chore/next-16.4.6-ci` at `e50996e` (planning started from `main` at `38dc23b`) |
+| Working tree | Clean; Phase-1 fixes committed in `080586f` |
+| Upgrade worktree | `../Movies_App-security-upgrade`, detached HEAD `38dc23b`, still present |
 | Worktrees | Exactly the two paths above |
-| Source trees | Identical (`git diff --no-index --quiet` on both `src` trees exited `0`) |
-| CI configuration | None before this phase; `.github/` did not exist |
+| Source trees | Identical at planning time (`git diff --no-index --quiet` on both `src` trees exited `0`) |
+| CI configuration | `.github/workflows/ci.yml` added in `e50996e` |
 | `gh` CLI | Not installed, so open pull requests could not be listed |
 
-Uncommitted Phase-1 paths:
+Phase-1 paths, committed in `080586f`:
 
 - **Modified:** `README.md`, `src/app/globals.css`, `src/app/layout.js`,
   `src/compenants/Users/User.jsx`, `src/compenants/cardes/MovieCard.css`,
@@ -714,20 +722,22 @@ Uncommitted Phase-1 paths:
 
 #### Safest integration path
 
-A Git merge of the worktree is the wrong tool here: it is a **detached HEAD**
-with **uncommitted, mixed changes** (upgrade + copied audit fixes). There is no
-branch to merge and no commit to cherry-pick. Copy only the three upgrade files.
+A Git merge of the worktree was the wrong tool here: it is a **detached HEAD**
+with **mixed changes** (upgrade + copied audit fixes) that were never committed
+there. There was no branch to merge and no commit to cherry-pick, so only the
+three upgrade files were copied. The sequence below is what was executed.
 
 1. Land the Phase-1 audit fixes first (see 2.7, Phase 1). This keeps the upgrade
    diff limited to dependencies and config.
 2. Branch from the updated `main` as `chore/next-16.4.6-ci`.
 3. Copy **only** `package.json`, `package-lock.json` and `next.config.mjs` from
-   `C:\Users\DELL\Movies_App-security-upgrade`. Do not copy `src/`, `README.md`,
+   `../Movies_App-security-upgrade`. Do not copy `src/`, `README.md`,
    `node_modules/` or `.next/`.
 4. Run `npm ci` (not `npm install`) so the copied lockfile is authoritative.
 5. Run `npm run lint` and `npm run build`, then a runtime smoke test.
-6. Commit and open one PR that also adds `.github/workflows/ci.yml`, so the
-   first CI run proves the upgraded tree is green.
+6. Commit both steps on one branch and open a single PR that also adds
+   `.github/workflows/ci.yml`, so the first CI run proves the upgraded tree is
+   green.
 7. Merge only after CI passes; then remove the detached worktree.
 
 **Sequencing warning:** on the current `main`, `16.4.3` can abort its first
@@ -778,9 +788,9 @@ when no live route, component or config imports it.
 - `home/Movie.js` is **not** dead: it is the active data source. Do not remove
   it just because it is static; refactoring it to JSON or an API is a separate
   feature.
-- `Users/User.jsx` is a tracked file with an uncommitted modification. It is
-  unreferenced, but deleting it while the Phase-1 diff is uncommitted would
-  blur the review. Delete it only in the cleanup PR.
+- `Users/User.jsx` is a tracked file that `080586f` modified (a lint-only escape
+  fix). It is unreferenced; delete it only in the cleanup PR so this branch stays
+  reviewable.
 - `Tache/tache.css` is only safe because nothing live imports it. Its global
   element selectors would affect every button and form in the app if imported.
 - Removing `MovieCard/` also removes the last lint warning; after cleanup,
@@ -1068,7 +1078,7 @@ reproduction steps; phases 3-6 remain future contributions.
 #### Phase 1 — land the audit fixes (applied in `080586f`)
 
 ```powershell
-cd C:\Users\DELL\Movies_App
+cd <repository-root>
 git status --short
 git diff --stat
 git switch -c fix/phase-1-audit
@@ -1077,19 +1087,19 @@ git commit -m "fix: restore routes, favourites and accessibility"
 git push -u origin fix/phase-1-audit
 ```
 
-Open PR A on GitHub (the `gh` CLI is not installed). Do **not** add `.github/`
-to this PR; keep the workflow for Phase 2 so its first run is green. Wait for
-review and merge.
+Executed as `080586f` on `chore/next-16.4.6-ci` rather than on a separate branch,
+so that the workflow could ship in the same PR. No pull request is open yet; the
+`gh` CLI is not installed.
 
-#### Phase 2 — upgrade + CI (applied in this branch's follow-up commit)
+#### Phase 2 — upgrade + CI (applied in `e50996e`)
 
 ```powershell
 git switch main
 git pull
 git switch -c chore/next-16.4.6-ci
-Copy-Item C:\Users\DELL\Movies_App-security-upgrade\package.json .
-Copy-Item C:\Users\DELL\Movies_App-security-upgrade\package-lock.json .
-Copy-Item C:\Users\DELL\Movies_App-security-upgrade\next.config.mjs .
+Copy-Item ..\Movies_App-security-upgrade\package.json .
+Copy-Item ..\Movies_App-security-upgrade\package-lock.json .
+Copy-Item ..\Movies_App-security-upgrade\next.config.mjs .
 npm ci
 npm run lint
 npm run build
@@ -1105,10 +1115,12 @@ git commit -m "chore: upgrade Next.js to 16.4.6 and add CI"
 git push -u origin chore/next-16.4.6-ci
 ```
 
-Open PR B. Confirm the `Lint and build` CI check is green, then merge. After the merge:
+Open PR B. Confirm the `Lint and build` CI check is green, then merge. No pull
+request is open yet, so the workflow has not run on GitHub; only the equivalent
+commands have been run locally. After the merge:
 
 ```powershell
-git worktree remove C:\Users\DELL\Movies_App-security-upgrade
+git worktree remove ..\Movies_App-security-upgrade
 git worktree prune
 ```
 
@@ -1158,7 +1170,8 @@ tests, and confirm `npm audit --omit=dev` still reports 0.
 
 #### Definition of done
 
-- [ ] A clean clone on Node 24 runs `npm ci`, `npm run lint`, `npm run build`.
+- [x] The branch runs `npm ci`, `npm run lint` and `npm run build` on Node 24.
+- [ ] A clean clone on Node 24 passes the same three commands in CI.
 - [ ] `main` uses Next.js `16.4.6`; production audit reports 0 vulnerabilities.
 - [ ] CI is required on `main` and green.
 - [ ] `npm run lint` reports 0 warnings.
@@ -1167,6 +1180,7 @@ tests, and confirm `npm audit --omit=dev` still reports 0.
 - [ ] Dead prototypes are removed in their own PR.
 - [ ] The detached upgrade worktree is removed.
 
-**Compliance:** this phase made no commit, push, pull request, merge, branch
-change or file deletion. `.github/workflows/ci.yml` and this section are
-uncommitted working-tree changes.
+**Compliance:** the fixes, the upgrade and `.github/workflows/ci.yml` were
+committed on `chore/next-16.4.6-ci` (`080586f`, `e50996e`) and pushed to
+`origin/chore/next-16.4.6-ci`. No pull request, merge, force push or file deletion
+has been performed, and `main` is unchanged at `38dc23b`.
