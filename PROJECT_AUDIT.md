@@ -642,7 +642,7 @@ by upgrading the ESLint toolchain (see Priority 1/2).
 
 ## Phase 2 — Contribution plan (reviewed 16 November 2026)
 
-> **Execution update (17 November 2026):** this plan is being applied on branch
+> **Execution update (17 November 2026):** this plan has been applied on branch
 > `chore/next-16.4.6-ci`. The Phase-1 fixes are the first commit on that branch;
 > the Next.js 16.4.6 upgrade and `.github/workflows/ci.yml` are the follow-up
 > commit. Cleanup (2.3), tests (2.5) and responsive verification (2.6) remain
@@ -799,7 +799,7 @@ when no live route, component or config imports it.
 
 ### 2.4 CI setup
 
-Workflow prepared at `.github/workflows/ci.yml`:
+Workflow added at `.github/workflows/ci.yml`:
 
 ```yaml
 name: CI
@@ -1050,9 +1050,22 @@ with the upgrade or cleanup PRs.
 
 ### 2.7 Exact next steps for the contributor
 
-Run these **later**, in order. They are not executed by this audit.
+Phases 1-2 are applied on this branch. The commands below are retained as the
+reproduction steps; phases 3-6 remain future contributions.
 
-#### Phase 1 — land the audit fixes
+**Verified on this branch (17 November 2026):**
+
+- `npm ci` completed with Next.js `16.4.6`.
+- `npm run lint`: 0 errors, 1 warning (the dead `compenants/MovieCard` draft).
+- `npm run build`: success; routes `/`, `/_not-found`, `/favorites`,
+  `/robots.txt`.
+- Runtime: `/` 200, `/favorites` 200, unknown route 404, `/robots.txt` 200,
+  poster image 200.
+- Browser: favourite added, navbar count updated, persisted across reload,
+  "Tout supprimer" restored the empty state; search `inc` returned one film;
+  no unexpected console errors.
+
+#### Phase 1 — land the audit fixes (applied in `080586f`)
 
 ```powershell
 cd C:\Users\DELL\Movies_App
@@ -1068,7 +1081,7 @@ Open PR A on GitHub (the `gh` CLI is not installed). Do **not** add `.github/`
 to this PR; keep the workflow for Phase 2 so its first run is green. Wait for
 review and merge.
 
-#### Phase 2 — upgrade + CI
+#### Phase 2 — upgrade + CI (applied in this branch's follow-up commit)
 
 ```powershell
 git switch main
