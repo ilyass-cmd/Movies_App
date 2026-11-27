@@ -38,7 +38,9 @@ jobs:
 
       - name: Install dependencies
         # npm ci is reproducible and fails if package.json and package-lock.json drift.
-        run: npm ci
+        # No dependency needs a lifecycle script to install; skipping them prevents
+        # unreviewed install-time code from executing in CI (Sonar S6505).
+        run: npm ci --ignore-scripts
 
       - name: Lint
         run: npm run lint
